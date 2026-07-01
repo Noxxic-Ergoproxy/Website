@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Noxxic-Ergoproxy Sp. z o.o.| Energy engineering & infrastructure</title>
+
+<style>
+:root{
+  --bg:#0b1220;
+  --card:#111a2e;
+  --text:#e8eefc;
+  --muted:#a9b4cc;
+  --accent:#4da3ff;
+  --accent2:#7c5cff;
+}
+
+*{box-sizing:border-box;font-family:Inter,system-ui,Arial;}
+
+body{
+  margin:0;
+  background-color: var(--bg);
+  color:var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Tło z cząsteczkami */
+#bg-canvas {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  z-index: -1;
+  background: radial-gradient(1200px 600px at 20% 10%, #18264a, var(--bg));
+}
+
+header{
+  padding:40px 20px;
+  max-width:1100px;
+  margin:auto;
+}
+
+nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:60px;
+  gap:10px;
+}
+
+.logo{
+  font-weight:700;
+  letter-spacing:1px;
+  font-size: 1.2rem;
+}
+
+.nav-actions{
+  display:flex;
+  gap:10px;
+  position: relative;
+}
+
+.btn{
+  padding:10px 20px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border:none;
+  color:white;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  white-space: nowrap;
+}
+
+.btn:hover { 
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(77, 163, 255, 0.4);
+}
+
+/* NAPRAWA UCINANIA KONTAKTU */
+#contact-dropdown {
+  display: none;
+  position: absolute;
+  top: 120%;
+  right: 0;
+  background: rgba(17, 26, 46, 0.95);
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  padding: 20px;
+  width: 320px;
+  max-width: 90vw;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+  z-index: 9999;
+  backdrop-filter: blur(15px);
+  animation: fadeInDown 0.4s ease forwards;
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#contact-dropdown p {
+  margin: 5px 0;
+  font-size: 0.85rem;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+#contact-dropdown a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.hero{
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:40px;
+  align-items:center;
+}
+
+h1{font-size:44px;margin:0 0 20px; transition: 0.5s;}
+p{color:var(--muted);line-height:1.6; font-size: 1.1rem;}
+
+.card{
+  background:rgba(17,26,46,0.7);
+  padding:25px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,0.08);
+  transition: all 0.4s ease;
+  backdrop-filter: blur(5px);
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  border-color: var(--accent);
+  background: rgba(17, 26, 46, 0.9);
+}
+
+/* ANIMACJE WEJŚCIA */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease-out;
+}
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+  max-width:1100px;
+  margin:40px auto 60px;
+  padding:0 20px;
+}
+
+.card h3 { margin-top: 0; color: var(--accent); }
+.card p { font-size: 0.95rem; margin-bottom: 0; }
+
+h2{text-align:center;margin-top:60px; font-size: 2rem;}
+
+footer{
+  text-align:center;
+  padding:40px;
+  color:var(--muted);
+  font-size:13px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr; text-align: center;}
+  .grid{grid-template-columns:1fr;}
+  h1{font-size:32px;}
+  #contact-dropdown { 
+    right: 50%;
+    transform: translateX(50%);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<header>
+  <nav>
+    <div class="logo">NOXXIC-ERGOPROXY</div>
+    <div class="nav-actions">
+      <div class="contact-container">
+        <button class="btn" onclick="toggleContact(event)" id="contactBtn">Kontakt</button>
+        <div id="contact-dropdown">
+            <h4 id="contactTitle" style="margin:0 0 10px 0; color:var(--accent);">Dane kontaktowe</h4>
+            <p><strong>Noxxic-Ergoproxy Sp. z o.o.</strong></p>
+            <p>ul. Joachima Lelewela 17</p>
+            <p>41-711 Ruda Śląska</p>
+            <p style="margin-top:10px; opacity: 0.8; font-size: 0.75rem;">
+                KRS: 0001230778 | NIP: PL6412576675<br>REGON: 544323288
+            </p>
+            <p style="margin-top:12px; border-top: 1px solid rgba(255,255,255,0.1); padding-top:10px;">
+                <a href="http://www.noxxic-ergoproxy.pl">www.noxxic-ergoproxy.pl</a><br>
+                <a href="mailto:biuro@noxxic-ergoproxy.pl">biuro@noxxic-ergoproxy.pl</a>
+            </p>
+        </div>
+      </div>
+      <button class="btn" onclick="toggleLang()" id="langBtn">EN</button>
+    </div>
+  </nav>
+
+  <div class="hero reveal active">
+    <div>
+      <h1 id="heroTitle">Infrastruktura energetyczna i systemy dla przemysłu</h1>
+      <p id="heroDesc">
+        Projektujemy i wspieramy rozwiązania w obszarze energetyki, automatyki i infrastruktury technicznej.
+      </p>
+    </div>
+
+    <div class="card" style="text-align: center; display: flex; justify-content: center; align-items: center;">
+      <svg viewBox="0 0 200 200" width="100%" height="220">
+        <defs>
+          <linearGradient id="g" x1="0" x2="1">
+            <stop offset="0%" stop-color="#4da3ff"/>
+            <stop offset="100%" stop-color="#7c5cff"/>
+          </linearGradient>
+        </defs>
+        <circle cx="100" cy="100" r="70" fill="none" stroke="url(#g)" stroke-width="2" opacity="0.3">
+            <animate attributeName="r" values="70;75;70" dur="4s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.3;0.1;0.3" dur="4s" repeatCount="indefinite" />
+        </circle>
+        
+        <path d="M100 40 L160 140 L40 140 Z" fill="none" stroke="url(#g)" stroke-width="5" stroke-linecap="round">
+            <animate attributeName="stroke-dasharray" from="0,400" to="400,0" dur="3s" repeatCount="indefinite" />
+        </path>
+        
+        <circle cx="100" cy="100" r="6" fill="white" shadow="0 0 10px white"/>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<h2 id="sectionTitle" class="reveal">Obszary działania</h2>
+
+<section class="grid">
+  <div class="card reveal"><h3 id="t1">Energetyka</h3><p id="d1">Analiza, projektowanie i optymalizacja systemów energetycznych.</p></div>
+  <div class="card reveal"><h3 id="t2">Elektryka</h3><p id="d2">Projektowanie i wsparcie instalacji elektrycznych w obiektach przemysłowych.</p></div>
+  <div class="card reveal"><h3 id="t3">Automatyka</h3><p id="d3">Projektowanie, integracja i wsparcie systemów automatyki oraz sterowania.</p></div>
+  <div class="card reveal"><h3 id="t4">Efektywność</h3><p id="d4">Redukcja kosztów operacyjnych i zwiększenie wydajności systemów.</p></div>
+  <div class="card reveal"><h3 id="t5">Bezpieczeństwo</h3><p id="d5">Projektowanie systemów zgodnych z wymaganiami bezpieczeństwa.</p></div>
+  <div class="card reveal"><h3 id="t6">Wsparcie projektowe</h3><p id="d6">Wsparcie inżynierskie na etapie projektowania i wdrożeń.</p></div>
+</section>
+
+<footer id="footerText">
+  Noxxic-Ergoproxy Sp. z o.o. © 2026 · Inżynieria systemów energetycznych
+</footer>
+
+<script>
+const translations = {
+    pl: {
+        contact: "Kontakt", contactTitle: "Dane kontaktowe",
+        heroTitle: "Infrastruktura energetyczna i systemy dla przemysłu",
+        heroDesc: "Projektujemy i wspieramy rozwiązania w obszarze energetyki, automatyki i infrastruktury technicznej.",
+        sectionTitle: "Obszary działania",
+        footer: "Noxxic-Ergoproxy Sp. z o.o. © 2026 · Inżynieria systemów energetycznych",
+        t1: "Energetyka", d1: "Analiza, projektowanie i optymalizacja systemów energetycznych.",
+        t2: "Elektryka", d2: "Projektowanie i wsparcie instalacji elektrycznych w obiektach przemysłowych.",
+        t3: "Automatyka", d3: "Projektowanie, integracja i wsparcie systemów automatyki oraz sterowania.",
+        t4: "Efektywność", d4: "Redukcja kosztów operacyjnych i zwiększenie wydajności systemów.",
+        t5: "Bezpieczeństwo", d5: "Projektowanie systemów zgodnych z wymaganiami bezpieczeństwa.",
+        t6: "Wsparcie projektowe", d6: "Wsparcie inżynierskie na etapie projektowania i wdrożeń."
+    },
+    en: {
+        contact: "Contact", contactTitle: "Contact Details",
+        heroTitle: "Energy Infrastructure & Industrial Systems",
+        heroDesc: "We design and support solutions in the field of energy, automation, and technical infrastructure.",
+        sectionTitle: "Areas of Operation",
+        footer: "Noxxic-Ergoproxy Sp. z o.o. © 2026 · Energy Systems Engineering",
+        t1: "Energy", d1: "Analysis, design, and optimization of energy systems.",
+        t2: "Electrical", d2: "Design and support of electrical installations in industrial facilities.",
+        t3: "Automation", d3: "Design, integration, and support of automation systems and control infrastructure.",
+        t4: "Efficiency", d4: "Reduction of operating costs and increasing system performance.",
+        t5: "Safety", d5: "Designing systems in accordance with safety requirements.",
+        t6: "Project Support", d6: "Engineering support at the design and implementation stage."
+    }
+};
+
+let currentLang = 'pl';
+
+function toggleLang() {
+    currentLang = currentLang === 'pl' ? 'en' : 'pl';
+    document.getElementById('langBtn').innerText = currentLang === 'pl' ? 'EN' : 'PL';
+    
+    const ids = ['contactBtn', 'contactTitle', 'heroTitle', 'heroDesc', 'sectionTitle', 'footerText', 't1', 'd1', 't2', 'd2', 't3', 'd3', 't4', 'd4', 't5', 'd5', 't6', 'd6'];
+    ids.forEach(id => {
+        const key = id.replace('Btn','').replace('Text','');
+        if(translations[currentLang][key]) {
+            document.getElementById(id).innerText = translations[currentLang][key];
+        } else if (id === 'contactTitle') {
+             document.getElementById(id).innerText = translations[currentLang].contactTitle;
+        }
+    });
+}
+
+function toggleContact(event) {
+    event.stopPropagation();
+    const dropdown = document.getElementById('contact-dropdown');
+    
+    const isVisible = dropdown.style.display === 'block';
+    dropdown.style.display = isVisible ? 'none' : 'block';
+    
+    if(!isVisible) {
+        const rect = dropdown.getBoundingClientRect();
+        if(rect.right > window.innerWidth) {
+            dropdown.style.right = "0";
+            dropdown.style.left = "auto";
+        }
+        if(rect.left < 0) {
+            dropdown.style.left = "0";
+            dropdown.style.right = "auto";
+        }
+    }
+}
+
+window.onclick = function(event) {
+    const dropdown = document.getElementById('contact-dropdown');
+    if (dropdown && dropdown.style.display === 'block') {
+        if(!dropdown.contains(event.target)) {
+            dropdown.style.display = 'none';
+        }
+    }
+}
+
+// Reveal Animation
+function reveal() {
+  const reveals = document.querySelectorAll(".reveal");
+  reveals.forEach(el => {
+    const windowHeight = window.innerHeight;
+    const elementTop = el.getBoundingClientRect().top;
+    if (elementTop < windowHeight - 100) {
+      el.classList.add("active");
+    }
+  });
+}
+window.addEventListener("scroll", reveal);
+reveal();
+
+// Background Canvas
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+function initCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+class Particle {
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 1.5;
+        this.speedX = Math.random() * 0.2 - 0.1;
+        this.speedY = Math.random() * 0.2 - 0.1;
+    }
+    update() {
+        this.x += this.speedX; this.y += this.speedY;
+        if (this.x > canvas.width) this.x = 0; if (this.x < 0) this.x = canvas.width;
+        if (this.y > canvas.height) this.y = 0; if (this.y < 0) this.y = canvas.height;
+    }
+    draw() {
+        ctx.fillStyle = 'rgba(77, 163, 255, 0.15)';
+        ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+    }
+}
+function createParticles() { for (let i = 0; i < 60; i++) particles.push(new Particle()); }
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+    requestAnimationFrame(animate);
+}
+window.addEventListener('resize', initCanvas);
+initCanvas(); createParticles(); animate();
+</script>
+
+</body>
+</html>
